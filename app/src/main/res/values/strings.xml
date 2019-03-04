@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Comment Hunter</string>
+    <string name="puzzle_text">Solve the puzzle to unlock messages</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
+    <string name="like_image_description">like image</string>
+    <string name="dislike_image_description">dislike image</string>
 </resources>
