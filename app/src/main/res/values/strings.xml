@@ -9,10 +9,16 @@
     <string name="status">Status</string>
     <string name="welcome">WELCOME!</string>
     <string name="go_to_map">GO TO MAP</string>
-    <string name="mark_the_location">MARK THE LOCATION</string>
+
     <string name="status_text">STATUS</string>
     <string name="your_messages_have">Your Messages Have:</string>
     <string name="silver">SILVER</string>
     <string name="likes">33 Likes</string>
     <string name="dislikes">10 Dislikes</string>
+
+    <string name="map_type_none">None</string>
+    <string name="map_type_normal">Normal</string>
+    <string name="map_type_terrain">Terrain</string>
+    <string name="map_type_satellite">Satellite</string>
+    <string name="map_type_hybrid">Hybrid</string>
 </resources>
