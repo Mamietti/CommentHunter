@@ -232,9 +232,9 @@ public class GMapActivity extends FragmentActivity implements
         double lng = address.getLongitude();
         goToLocationZoom(lat, lng, 15);
 
-        if(marker != null){
-            marker.remove();
-        }
+        //if(marker != null){
+            //marker.remove();
+        //}
 
         MarkerOptions options = new MarkerOptions()
                 .title(locality)
