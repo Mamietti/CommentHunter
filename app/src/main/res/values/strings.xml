@@ -9,6 +9,8 @@
     <string name="status">Status</string>
     <string name="welcome">WELCOME!</string>
     <string name="go_to_map">GO TO MAP</string>
+    <string name="add_message">Add Message</string>
+    <string name="show_messages">Show Messages</string>
 
     <string name="status_text">STATUS</string>
     <string name="your_messages_have">Your Messages Have:</string>
