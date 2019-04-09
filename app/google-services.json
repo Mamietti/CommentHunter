@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "94731409813",
+    "firebase_url": "https://commenthunter-ea7fb.firebaseio.com",
+    "project_id": "commenthunter-ea7fb",
+    "storage_bucket": "commenthunter-ea7fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94731409813:android:4e352fcb41ebbdd7",
+        "android_client_info": {
+          "package_name": "com.example.commenthunter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-RA6ODjbb21yYKaD00It7fZu1b6g1P5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "94731409813-b63e5hrl7e43qfjqi0qhdhhuv7dqusgg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

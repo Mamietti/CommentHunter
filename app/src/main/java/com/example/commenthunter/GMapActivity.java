@@ -201,7 +201,6 @@ public class GMapActivity extends FragmentActivity implements
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
                 Location location = locationList.get(locationList.size() - 1);
-                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 lastLocation = location;
                 if (currentUserLocationMarker != null){
                     currentUserLocationMarker.remove();
@@ -329,13 +328,13 @@ public class GMapActivity extends FragmentActivity implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        options();
-
-    }
-
-    private void options(){
+        LatLng position = marker.getPosition();
         Intent intent = new Intent(GMapActivity.this, Options.class);
+        intent.putExtra("latitude", position.latitude);
+        intent.putExtra("longitude", position.longitude);
+        //Log.d("MAP_ACTIVITY", "Latitude="+position.latitude+" Logitude="+position.longitude);
         startActivity(intent);
 
     }
+
 }
