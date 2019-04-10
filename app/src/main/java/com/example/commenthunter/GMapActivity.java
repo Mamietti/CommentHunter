@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -114,6 +115,42 @@ public class GMapActivity extends FragmentActivity implements
             mMap.setMyLocationEnabled(true);
 
         }
+
+        //Draw the markers from DB
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("marklocations");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //Listen for when new location is added, create a new tag
+                double latitude = dataSnapshot.child("latitude").getValue(Double.class);
+                double longitude = dataSnapshot.child("longitude").getValue(Double.class);
+                LatLng latLng = new LatLng(latitude, longitude);
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Message")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -310,7 +347,7 @@ public class GMapActivity extends FragmentActivity implements
         mMap.moveCamera(update);
     }
 
-    Marker marker;
+    Marker tempMarker; //tempMarker will mark the place where the user searched
 
     public void geoLocate(View view) throws IOException {
         EditText et = findViewById(R.id.editText);
@@ -334,7 +371,7 @@ public class GMapActivity extends FragmentActivity implements
         MarkerOptions options = new MarkerOptions()
                 .title(locality)
                 .position(new LatLng(lat, lng));
-        marker = mMap.addMarker(options);
+        tempMarker = mMap.addMarker(options);
     }
 
     @Override
@@ -370,6 +407,10 @@ public class GMapActivity extends FragmentActivity implements
         intent.putExtra("latitude", position.latitude);
         intent.putExtra("longitude", position.longitude);
         //Log.d("MAP_ACTIVITY", "Latitude="+position.latitude+" Logitude="+position.longitude);
+        //if tempMarker exist, remove it
+        if (tempMarker != null) {
+            tempMarker.remove();
+        }
         startActivity(intent);
 
     }
