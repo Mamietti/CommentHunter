@@ -36,34 +36,36 @@ public class AddMessage extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get db reference at the root
-                final DatabaseReference myRef = database.getReference();
-                //a hack to be able to query uniquely a location easily with firebase, by using lat+a+long as unique key in db
-                //also we need to replace . with , since firebase does not allow it inside key
-                final String uniquekey = (String.valueOf(latitude)+"a"+String.valueOf(longitude)).replace(".", ",");
-                //check if there is this location already exist in marklocations (key is lat+"a"+long)
-                myRef.child("marklocations").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.child(uniquekey).exists()) {
-                            //Not exist yet, create new mark location
-                            MarkLocation newMark = new MarkLocation(latitude, longitude);
-                            myRef.child("marklocations").child(uniquekey).setValue(newMark);
-                            Log.d("DB", "Write new location");
-                        }
-                        else {
-                            Log.d("DB", "Location of this mark existed");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d("DB", "Can't connect to DB");
-                    }
-                });
                 //get the message from EditText
                 String message = messageText.getText().toString();
-                if (message != null) {
+
+                //Do nothing if the string is empty
+                if (!message.equals("")) {
+                    //get db reference at the root
+                    final DatabaseReference myRef = database.getReference();
+                    //a hack to be able to query uniquely a location easily with firebase, by using lat+a+long as unique key in db
+                    //also we need to replace . with , since firebase does not allow it inside key
+                    final String uniquekey = (String.valueOf(latitude) + "a" + String.valueOf(longitude)).replace(".", ",");
+                    //check if there is this location already exist in marklocations (key is lat+"a"+long)
+                    myRef.child("marklocations").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.child(uniquekey).exists()) {
+                                //Not exist yet, create new mark location
+                                MarkLocation newMark = new MarkLocation(latitude, longitude);
+                                myRef.child("marklocations").child(uniquekey).setValue(newMark);
+                                Log.d("DB", "Write new location");
+                            } else {
+                                Log.d("DB", "Location of this mark existed");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("DB", "Can't connect to DB");
+                        }
+                    });
+
                     //Get time and create new Message object with it
                     long timeStamp = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                     Message newMessage = new Message(message, timeStamp);
@@ -75,8 +77,6 @@ public class AddMessage extends AppCompatActivity {
                     Intent intent = new Intent(AddMessage.this, GMapActivity.class);
                     startActivity(intent);
                 }
-
-
             }
         });
     }

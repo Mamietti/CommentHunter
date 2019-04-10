@@ -34,6 +34,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -228,7 +233,7 @@ public class GMapActivity extends FragmentActivity implements
         locationRequest = new LocationRequest();
         locationRequest.setInterval(1100);
         locationRequest.setFastestInterval(1100);
-        locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             //LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -255,6 +260,38 @@ public class GMapActivity extends FragmentActivity implements
             fusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback,null);
 
         }
+
+        //Draw the markers from DB
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("marklocations");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                double latitude = 0, longitude = 0;
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    try {
+                        latitude = child.child("latitude").getValue(Double.class);
+                        longitude = child.child("longitude").getValue(Double.class);
+
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title("Message")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    } catch (NullPointerException e) {
+                        //Skip data if lat or long null
+                        Log.d("MAP_ACTIVITY", "Unable to draw this location's marker Lat:"+latitude+"Long:"+longitude);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
