@@ -32,13 +32,6 @@
         <activity
             android:name=".AddMessage"
             android:label="Add Message" />
-        <activity android:name=".GMapActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
 
         <activity
             android:name=".WelcomeActivity"
@@ -48,6 +41,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".StatusActivity"
+            android:label="Status"></activity>
+        <activity
+            android:name=".GMapActivity"
+            android:label="GMap"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
