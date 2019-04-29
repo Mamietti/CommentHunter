@@ -47,16 +47,15 @@ public class Options extends AppCompatActivity {
         if (extras != null) {
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
-            Log.d("OPTION_ACTIVITY", "Latitude="+latitude+" Longitude="+longitude);
-        }
-        else {
+            Log.d("OPTION_ACTIVITY", "Latitude=" + latitude + " Longitude=" + longitude);
+        } else {
             Log.d("OPTION_ACTIVITY", "Unable to retrieve coordinate");
         }
 
     }
 
 
-    private void addcommentActivity(){
+    private void addcommentActivity() {
         Intent intent = new Intent(Options.this, AddMessage.class);
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
@@ -64,14 +63,11 @@ public class Options extends AppCompatActivity {
 
     }
 
-    private void showcommentActivity(){
+    private void showcommentActivity() {
         //Start the show message activity?
-        //Intent intent = new Intent(Options.this, AddMessage.class);
-        //startActivity(intent);
-
+        Intent intent = new Intent(Options.this, MessagesActivity.class);
+        startActivity(intent);
     }
-
-
 
 
 }

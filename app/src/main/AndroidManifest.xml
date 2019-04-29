@@ -47,6 +47,9 @@
         <activity
             android:name=".GMapActivity"
             android:label="GMap"></activity>
+        <activity
+            android:name=".MessagesActivity"
+            android:label="Messages"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
