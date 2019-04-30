@@ -22,53 +22,29 @@ public class MessagesActivity extends AppCompatActivity {
     double longitude;
     FirebaseDatabase database;
 
+    private ArrayList<String> arrayOfMessages;
+    private MessagesAdapter adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
         database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference();
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            latitude = extras.getDouble("latitude");
-            longitude = extras.getDouble("longitude");
-            Log.d("OPTION_ACTIVITY", "Latitude=" + latitude + " Longitude=" + longitude);
-        } else {
-            Log.d("OPTION_ACTIVITY", "Unable to retrieve coordinate");
-        }
-        final String uniquekey = (String.valueOf(latitude) + "a" + String.valueOf(longitude)).replace(".", ","); //.child(uniquekey)
-        myRef.child("messages").child(uniquekey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                ArrayList<Message> arrayOfMessages = new ArrayList<>();
-                MessagesAdapter adapter = new MessagesAdapter(getApplicationContext(), arrayOfMessages);
 
-                Iterator<com.google.firebase.database.DataSnapshot> posts = dataSnapshot.getChildren().iterator();
-                while (posts.hasNext()){
-                    Message post = posts.next().getValue(Message.class);
-                    System.out.println(post.message);
-                    adapter.add(post);
-                }
+        arrayOfMessages = new ArrayList<>();
+        adapter = new MessagesAdapter(getApplicationContext(), arrayOfMessages);
 
-                // Construct the data source
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(adapter);
 
-                ListView listView = findViewById(R.id.commentListView);
-                listView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("DB", "Can't connect to DB");
-            }
-
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         //Retrieve the coordinate
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -79,6 +55,33 @@ public class MessagesActivity extends AppCompatActivity {
         } else {
             Log.d("MESSAGES_ACTIVITY", "Unable to retrieve coordinate");
         }
+
+        final DatabaseReference myRef = database.getReference();
+
+
+        final String uniquekey = (String.valueOf(latitude) + "a" + String.valueOf(longitude)).replace(".", ","); //.child(uniquekey)
+        myRef.child("messages").child(uniquekey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //ArrayList<String> arrayOfMessages = new ArrayList<>();
+                Log.d("DB", "Connected");
+                arrayOfMessages.clear(); //remove all old messages
+                for (DataSnapshot comment: dataSnapshot.getChildren()) {
+                    //loop child and add to array
+                    String message = comment.child("message").getValue(String.class);
+                    Log.d("Messages", message);
+                    arrayOfMessages.add(message);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DB", "Can't connect to DB");
+            }
+
+
+        });
 
     }
 

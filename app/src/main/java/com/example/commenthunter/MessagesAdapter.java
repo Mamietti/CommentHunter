@@ -1,6 +1,7 @@
 package com.example.commenthunter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesAdapter extends ArrayAdapter<Message> {
+public class MessagesAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
-    private List<Message> messageList = new ArrayList<>();
+    private List<String> messageList = new ArrayList<>();
+    private LayoutInflater inflater;
 
-    public MessagesAdapter(Context context, ArrayList<Message> messages) {
+    public MessagesAdapter(Context context, ArrayList<String> messages) {
         super(context, 0, messages);
         mContext = context;
         messageList = messages;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -26,12 +29,12 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.row_item_messages, parent,false);
+            listItem = inflater.inflate(R.layout.row_item_messages, parent,false);
 
-        Message currentMessage = messageList.get(position);
+        String currentMessage = messageList.get(position);
 
-        TextView name = listItem.findViewById(R.id.commentTextView);
-        name.setText(currentMessage.message);
+        TextView comment = (TextView)listItem.findViewById(R.id.commentText);
+        comment.setText(currentMessage);
 
         return listItem;
     }
