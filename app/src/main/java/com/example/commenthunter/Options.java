@@ -66,6 +66,8 @@ public class Options extends AppCompatActivity {
     private void showcommentActivity() {
         //Start the show message activity?
         Intent intent = new Intent(Options.this, MessagesActivity.class);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
 

@@ -74,7 +74,9 @@ public class AddMessage extends AppCompatActivity {
                     Log.d("DB", "Add new message");
 
                     //TODO: Currently it wil go back to the map after adding message, perhaps going to show messages is better?
-                    Intent intent = new Intent(AddMessage.this, GMapActivity.class);
+                    Intent intent = new Intent(AddMessage.this, MessagesActivity.class);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
                     startActivity(intent);
                 }
             }
